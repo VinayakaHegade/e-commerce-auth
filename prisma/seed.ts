@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { prisma } from "~/server/db";
+import { db } from "~/server/db";
 
 function generateUniqueCategories(count: number): { name: string }[] {
   const categories = new Set<string>();
@@ -14,7 +14,7 @@ function generateUniqueCategories(count: number): { name: string }[] {
 
 async function seedCategories() {
   const categories = generateUniqueCategories(100);
-  await prisma.category.createMany({ data: categories });
+  await db.category.createMany({ data: categories });
 }
 
 seedCategories()
@@ -23,5 +23,5 @@ seedCategories()
     process.exit(1);
   })
   .finally(() => {
-    void prisma.$disconnect();
+    void db.$disconnect();
   });

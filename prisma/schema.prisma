@@ -33,4 +33,3 @@ model CategoryOnUser {
 
   @@id([userId, categoryId])
 }
-

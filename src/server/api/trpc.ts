@@ -9,8 +9,9 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { prisma } from "../db";
-import { type Context } from "~/utils/trpc-context";
+
+import { db } from "../db";
+import { deserializeUser } from "./utils/auth-middleware";
 
 /**
  * 1. CONTEXT
@@ -25,10 +26,7 @@ import { type Context } from "~/utils/trpc-context";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  return {
-    prisma,
-    ...opts,
-  };
+  return await deserializeUser(opts, db);
 };
 
 /**
@@ -38,7 +36,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-export const t = initTRPC.context<Context>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -50,6 +48,19 @@ export const t = initTRPC.context<Context>().create({
       },
     };
   },
+});
+
+const isAuthed = t.middleware(({ next, ctx }) => {
+  const { user } = ctx;
+
+  if (!user) {
+    throw new TRPCError({
+      cause: new Error("You must be logged in to access this resource"),
+      code: "UNAUTHORIZED",
+      message: "You must be logged in to access this resource",
+    });
+  }
+  return next();
 });
 
 /**
@@ -80,15 +91,6 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.user) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be logged in to access this resource",
-    });
-  }
-  return next();
-});
 
 export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(isAuthed);

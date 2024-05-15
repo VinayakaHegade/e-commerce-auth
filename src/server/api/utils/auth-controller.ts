@@ -1,19 +1,52 @@
-import { type CreateUserInput, type LoginUserInput } from "./user-schema";
+import {
+  type CreateUserInput,
+  type LoginUserInput,
+} from "../../../lib/user-schema";
 import bcrypt from "bcryptjs";
 import { TRPCError } from "@trpc/server";
-import jwt from "jsonwebtoken";
+import jwt, { type Secret } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { prisma } from "../db";
+import { type PrismaClient } from "@prisma/client";
+import { type DefaultArgs } from "@prisma/client/runtime/library";
+
+export type Context =
+  | {
+      user: null;
+      db: PrismaClient<
+        {
+          log: ("query" | "warn" | "error")[];
+        },
+        never,
+        DefaultArgs
+      >;
+    }
+  | {
+      user: {
+        id: string;
+        email: string;
+        verified: boolean | null;
+        name: string;
+      };
+      db: PrismaClient<
+        {
+          log: ("query" | "warn" | "error")[];
+        },
+        never,
+        DefaultArgs
+      >;
+    };
 
 export const registerHandler = async ({
   input,
+  ctx,
 }: {
   input: CreateUserInput;
+  ctx: Context;
 }) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12);
 
-    const user = await prisma.user.create({
+    const user = await ctx.db.user.create({
       data: {
         email: input.email,
         name: input.name,
@@ -40,20 +73,29 @@ export const registerHandler = async ({
   }
 };
 
-export const loginHandler = async ({ input }: { input: LoginUserInput }) => {
+export const loginHandler = async ({
+  input,
+  ctx,
+}: {
+  input: LoginUserInput;
+  ctx: Context;
+}) => {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await ctx.db.user.findUnique({
       where: { email: input.email },
     });
 
-    if (!user || !(await bcrypt.compare(input.password, user.password))) {
+    const compare = await bcrypt.compare(input.password, user?.password ?? "");
+
+    if (!user || !compare) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Invalid email or password",
       });
     }
 
-    const secret = process.env.JWT_SECRET!;
+    const secret: Secret = process.env.JWT_SECRET!;
+
     const token = jwt.sign({ sub: user.id }, secret, {
       expiresIn: 60 * 60,
     });
