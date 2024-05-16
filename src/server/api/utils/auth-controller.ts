@@ -8,6 +8,7 @@ import jwt, { type Secret } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { type PrismaClient } from "@prisma/client";
 import { type DefaultArgs } from "@prisma/client/runtime/library";
+import { generateAndStoreVerificationCode } from "~/utils/emailVerification";
 
 export type Context =
   | {
@@ -24,8 +25,12 @@ export type Context =
       user: {
         id: string;
         email: string;
-        verified: boolean | null;
         name: string;
+        verified: boolean | null;
+        verificationCode: string | null;
+        verificationExpiry: Date | null;
+        failedOtpAttempts: number | null;
+        otpLockoutExpiry: Date | null;
       };
       db: PrismaClient<
         {
@@ -54,10 +59,13 @@ export const registerHandler = async ({
       },
     });
 
+    await generateAndStoreVerificationCode(input.email, 10);
+
     const { password, ...userWithoutPassword } = user;
 
     return {
       status: "success",
+      message: "Please check your email for the verification code",
       data: {
         user: userWithoutPassword,
       },
@@ -85,12 +93,21 @@ export const loginHandler = async ({
       where: { email: input.email },
     });
 
+    if (user?.otpLockoutExpiry && user.otpLockoutExpiry > new Date()) {
+      throw new TRPCError({
+        code: "TOO_MANY_REQUESTS",
+        message: `Account temporarily locked due to too many failed attempts. Please try again after ${Math.ceil((user.otpLockoutExpiry.getTime() - Date.now()) / (1000 * 60))} minutes.`,
+      });
+    }
+
     const compare = await bcrypt.compare(input.password, user?.password ?? "");
 
-    if (!user || !compare) {
+    if (!user || !compare || !(user?.verified ?? false)) {
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "Invalid email or password",
+        message: user?.verified
+          ? "Invalid email or password"
+          : "Account not verified",
       });
     }
 
