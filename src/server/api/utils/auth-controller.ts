@@ -50,7 +50,7 @@ export const registerHandler = async ({
 }) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12);
-
+    
     const user = await ctx.db.user.create({
       data: {
         email: input.email,
@@ -62,19 +62,24 @@ export const registerHandler = async ({
     await generateAndStoreVerificationCode(input.email, 10);
 
     const { password, ...userWithoutPassword } = user;
-
     return {
       status: "success",
       message: "Please check your email for the verification code",
-      data: {
-        user: userWithoutPassword,
-      },
+      data: { user: userWithoutPassword },
     };
   } catch (err: any) {
     if (err.code === "P2002") {
       throw new TRPCError({
         code: "CONFLICT",
         message: "Email already exists",
+      });
+    } else if (
+      err.code === "INTERNAL_SERVER_ERROR" &&
+      err.message === "Failed to send verification email"
+    ) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to send verification email",
       });
     }
     throw err;

@@ -9,7 +9,7 @@ import { sendVerificationEmail } from "./sendEmail";
  * @param length - The desired length of the code
  * @returns A random code as a string
  */
-export const generateRandomCode = (length: number): string => {
+const generateRandomCode = (length: number): string => {
   return crypto
     .randomBytes(Math.ceil(length / 2))
     .toString("hex")
@@ -32,7 +32,13 @@ export const generateAndStoreVerificationCode = async (
     },
   });
 
-  await sendVerificationEmail(email, verificationCode);
+  const emailSent = await sendVerificationEmail(email, verificationCode);
+  if (!emailSent) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to send verification email",
+    });
+  }
 };
 
 export const isVerificationCodeValid = async (email: string, code: string) => {
