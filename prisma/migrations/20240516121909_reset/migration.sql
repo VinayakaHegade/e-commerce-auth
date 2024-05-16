@@ -5,6 +5,10 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "verified" BOOLEAN DEFAULT false,
     "password" TEXT NOT NULL,
+    "verificationCode" TEXT,
+    "verificationExpiry" TIMESTAMP(3),
+    "failedOtpAttempts" INTEGER DEFAULT 0,
+    "otpLockoutExpiry" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -27,6 +31,9 @@ CREATE TABLE "CategoryOnUser" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE INDEX "User_verificationCode_verificationExpiry_idx" ON "User"("verificationCode", "verificationExpiry");
 
 -- AddForeignKey
 ALTER TABLE "CategoryOnUser" ADD CONSTRAINT "CategoryOnUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
