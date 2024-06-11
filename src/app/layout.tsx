@@ -1,6 +1,8 @@
 import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
+import Header from "./components/header";
+import OfferBar from "./components/offer-bar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Header />
+        <OfferBar />
+        <TRPCReactProvider>
+          <main className="mx-auto max-w-[1440px]">{children}</main>
+        </TRPCReactProvider>
       </body>
     </html>
   );
