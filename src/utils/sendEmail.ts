@@ -17,10 +17,7 @@ const transporter = nodemailer.createTransport({
  * @param email - The email address to send the verification code to
  * @param code - The verification code to include in the email
  */
-export const sendVerificationEmail = async (
-  email: string,
-  code: string,
-): Promise<boolean> => {
+export const sendVerificationEmail = async (email: string, code: string): Promise<boolean> => {
   const mailOptions = {
     from: `"${process.env.EMAIL_USER_NAME} from E-Commerce Auth 🔒" <${process.env.EMAIL_USER}>`,
     to: email,

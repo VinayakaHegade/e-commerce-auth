@@ -12,7 +12,7 @@ export const deserializeUser = async (
     },
     never,
     DefaultArgs
-  >,
+  >
 ) => {
   const cookieStore = cookies();
   try {

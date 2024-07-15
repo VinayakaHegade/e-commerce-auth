@@ -29,6 +29,7 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
 
 ## Gmail setup
+
 - Establish a Gmail account if you don't already have one.
 - Log in to your Gmail account and choose "Manage your Google Account".
 - Head to the Security tab on the left panel.

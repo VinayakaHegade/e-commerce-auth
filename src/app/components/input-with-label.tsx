@@ -10,13 +10,7 @@ type InputWithLabelProps = InputHTMLAttributes<HTMLInputElement> & {
   placeholder: string;
 };
 
-export function InputWithLabel({
-  id,
-  label,
-  type,
-  placeholder,
-  ...props
-}: InputWithLabelProps) {
+export function InputWithLabel({ id, label, type, placeholder, ...props }: InputWithLabelProps) {
   return (
     <div className="grid w-full items-center gap-[7px]">
       <Label htmlFor={id} className="text-sm md:text-base">

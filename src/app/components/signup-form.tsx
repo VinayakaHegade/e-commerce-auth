@@ -5,13 +5,7 @@ import { Button } from "./ui/button";
 function SignUpForm() {
   return (
     <form className="mx-auto flex max-w-[456px] flex-col gap-6 md:gap-8">
-      <InputWithLabel
-        id="name"
-        label="Name"
-        type="text"
-        placeholder="Enter your name"
-        required
-      />
+      <InputWithLabel id="name" label="Name" type="text" placeholder="Enter your name" required />
       <InputWithLabel
         id="email"
         label="Email"
@@ -26,7 +20,7 @@ function SignUpForm() {
         placeholder="Enter your password"
         required
       />
-      <Button className="text-white bg-black mt-2 h-auto text-wrap py-3.5 md:text-base md:tracking-[0.07em]">
+      <Button className="mt-2 h-auto text-wrap bg-black py-3.5 text-white md:text-base md:tracking-[0.07em]">
         CREATE ACCOUNT
       </Button>
     </form>

@@ -1,12 +1,11 @@
 import { createUserSchema, loginUserSchema } from "~/lib/user-schema";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import {
-  loginHandler,
-  logoutHandler,
-  registerHandler,
-} from "~/server/api/utils/auth-controller";
+import { loginHandler, logoutHandler, registerHandler } from "~/server/api/utils/auth-controller";
 import { z } from "zod";
-import { resendVerificationCodeHandler, verifyEmailHandler } from "../utils/email-verification-controller";
+import {
+  resendVerificationCodeHandler,
+  verifyEmailHandler,
+} from "../utils/email-verification-controller";
 
 const authRouter = createTRPCRouter({
   registerUser: publicProcedure

@@ -1,7 +1,4 @@
-import {
-  type CreateUserInput,
-  type LoginUserInput,
-} from "../../../lib/user-schema";
+import { type CreateUserInput, type LoginUserInput } from "../../../lib/user-schema";
 import bcrypt from "bcryptjs";
 import { TRPCError } from "@trpc/server";
 import jwt, { type Secret } from "jsonwebtoken";
@@ -41,16 +38,10 @@ export type Context =
       >;
     };
 
-export const registerHandler = async ({
-  input,
-  ctx,
-}: {
-  input: CreateUserInput;
-  ctx: Context;
-}) => {
+export const registerHandler = async ({ input, ctx }: { input: CreateUserInput; ctx: Context }) => {
   try {
     const hashedPassword = await bcrypt.hash(input.password, 12);
-    
+
     const user = await ctx.db.user.create({
       data: {
         email: input.email,
@@ -86,13 +77,7 @@ export const registerHandler = async ({
   }
 };
 
-export const loginHandler = async ({
-  input,
-  ctx,
-}: {
-  input: LoginUserInput;
-  ctx: Context;
-}) => {
+export const loginHandler = async ({ input, ctx }: { input: LoginUserInput; ctx: Context }) => {
   try {
     const user = await ctx.db.user.findUnique({
       where: { email: input.email },
@@ -110,9 +95,7 @@ export const loginHandler = async ({
     if (!user || !compare || !(user?.verified ?? false)) {
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: user?.verified
-          ? "Invalid email or password"
-          : "Account not verified",
+        message: user?.verified ? "Invalid email or password" : "Account not verified",
       });
     }
 

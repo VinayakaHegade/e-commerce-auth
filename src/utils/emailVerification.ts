@@ -18,7 +18,7 @@ const generateRandomCode = (length: number): string => {
 
 export const generateAndStoreVerificationCode = async (
   email: string,
-  expirationMinutes: number,
+  expirationMinutes: number
 ) => {
   const verificationCode = generateRandomCode(8);
   const expirationTime = new Date();

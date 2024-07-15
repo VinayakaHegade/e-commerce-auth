@@ -8,13 +8,7 @@ import {
   resetFailedOtpAttempts,
 } from "~/utils/emailVerification";
 
-export const verifyEmailHandler = async ({
-  email,
-  code,
-}: {
-  email: string;
-  code: string;
-}) => {
+export const verifyEmailHandler = async ({ email, code }: { email: string; code: string }) => {
   const isCodeValid = await isVerificationCodeValid(email, code);
   if (!isCodeValid) {
     await handleFailedOtpAttempt(email);
@@ -30,11 +24,7 @@ export const verifyEmailHandler = async ({
   return { status: "success" };
 };
 
-export const resendVerificationCodeHandler = async ({
-  email,
-}: {
-  email: string;
-}) => {
+export const resendVerificationCodeHandler = async ({ email }: { email: string }) => {
   const user = await db.user.findUnique({ where: { email } });
   if (!user) {
     throw new TRPCError({ code: "BAD_REQUEST", message: "User not found" });
