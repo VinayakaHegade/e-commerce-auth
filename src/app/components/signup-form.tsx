@@ -2,25 +2,27 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { InputWithLabel } from "./input-with-label";
 import { Button } from "./ui/button";
 import { createUserSchema, type CreateUserInput } from "~/lib/user-schema";
 import { api } from "~/trpc/react";
 
 function SignUpForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm<CreateUserInput>({
     resolver: zodResolver(createUserSchema),
   });
 
   const { mutate, isPending } = api.auth.registerUser.useMutation({
-    onSuccess: () => {
-      // Todo: Redirect to otp page after successful signup
-      console.log("success login");
+    onSuccess: (data) => {
+      router.push(`/verify-email?email=${encodeURIComponent(data.data.user.email)}`);
     },
     onError: (error) => {
       setError("root", {
@@ -31,14 +33,21 @@ function SignUpForm() {
   });
 
   function onSubmit(data: CreateUserInput) {
+    clearErrors();
     mutate(data);
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto flex max-w-[456px] flex-col gap-6 md:gap-8"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col gap-6 md:gap-8">
+      {errors.root && (
+        <div
+          className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+          role="alert"
+        >
+          <span className="block sm:inline">{errors.root.message}</span>
+        </div>
+      )}
+
       <InputWithLabel
         id="name"
         label="Name"
@@ -63,8 +72,11 @@ function SignUpForm() {
         {...register("password")}
         error={errors.password?.message}
       />
-      {errors.root && <p className="text-sm text-red-500">{errors.root.message}</p>}
-      <Button className="mt-2 h-auto text-wrap bg-black py-3.5 text-white md:text-base md:tracking-[0.07em]">
+      <Button
+        type="submit"
+        className="mt-2 min-h-14 text-wrap bg-black p-[18px] text-white md:text-base md:tracking-[0.07em]"
+        disabled={isPending}
+      >
         {isPending ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
       </Button>
     </form>

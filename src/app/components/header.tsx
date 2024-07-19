@@ -1,5 +1,6 @@
 import { HEADER } from "config/header";
 import Image from "next/image";
+import Link from "next/link";
 
 function Header() {
   return (
@@ -15,7 +16,9 @@ function Header() {
       </section>
 
       <section className="flex items-baseline justify-between">
-        <h1 className="text-[32px] font-bold leading-[39px]">ECOMMERCE</h1>
+        <Link href="/">
+          <h1 className="text-[32px] font-bold leading-[39px]">ECOMMERCE</h1>
+        </Link>
         <nav className="flex gap-x-8">
           {HEADER.QuickLinks.map((item) => (
             <p key={item} className="font-semibold leading-[19px]">

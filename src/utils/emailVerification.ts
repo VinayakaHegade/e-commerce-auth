@@ -1,26 +1,22 @@
 import { TRPCError } from "@trpc/server";
-import crypto from "crypto";
 import { db } from "~/server/db";
 import { MAX_OTP_ATTEMPTS, OTP_LOCKOUT_DURATION } from "./constants";
 import { sendVerificationEmail } from "./sendEmail";
 
 /**
- * Generates a random code of the specified length
+ * Generates a random numeric code of the specified length
  * @param length - The desired length of the code
- * @returns A random code as a string
+ * @returns A random numeric code as a string
  */
-const generateRandomCode = (length: number): string => {
-  return crypto
-    .randomBytes(Math.ceil(length / 2))
-    .toString("hex")
-    .slice(0, length);
+const generateRandomNumericCode = (length: number): string => {
+  return Array.from({ length }, () => Math.floor(Math.random() * 10)).join("");
 };
 
 export const generateAndStoreVerificationCode = async (
   email: string,
   expirationMinutes: number
 ) => {
-  const verificationCode = generateRandomCode(8);
+  const verificationCode = generateRandomNumericCode(8);
   const expirationTime = new Date();
   expirationTime.setMinutes(expirationTime.getMinutes() + expirationMinutes);
 

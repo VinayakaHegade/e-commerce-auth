@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./components/header";
 import OfferBar from "./components/offer-bar";
+import { Toaster } from "./components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TRPCReactProvider>
           <main className="mx-auto max-w-[1440px]">{children}</main>
         </TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );
