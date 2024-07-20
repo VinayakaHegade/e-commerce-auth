@@ -34,7 +34,32 @@ export const sendVerificationEmail = async (email: string, code: string): Promis
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    // Verify the connection configuration
+    await new Promise((resolve, reject) => {
+      transporter.verify((error, success) => {
+        if (error) {
+          console.error("Error verifying transporter:", error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
+    });
+
+    // Send the email
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Error sending verification email:", err);
+          reject(err);
+        } else {
+          console.log("Verification email sent:", info);
+          resolve(info);
+        }
+      });
+    });
+
     return true;
   } catch (error) {
     console.error("Error sending verification email:", error);
