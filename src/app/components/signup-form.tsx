@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -10,11 +11,12 @@ import { api } from "~/trpc/react";
 
 function SignUpForm() {
   const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     clearErrors,
   } = useForm<CreateUserInput>({
     resolver: zodResolver(createUserSchema),
@@ -25,26 +27,24 @@ function SignUpForm() {
       router.push(`/verify-email?email=${encodeURIComponent(data.data.user.email)}`);
     },
     onError: (error) => {
-      setError("root", {
-        type: "manual",
-        message: error.message || "An error occurred during sign up",
-      });
+      setServerError(error.message || "An error occurred during sign up");
     },
   });
 
   function onSubmit(data: CreateUserInput) {
     clearErrors();
+    setServerError(null);
     mutate(data);
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col gap-6 md:gap-8">
-      {errors.root && (
+      {serverError && (
         <div
           className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
           role="alert"
         >
-          <span className="block sm:inline">{errors.root.message}</span>
+          <span className="block sm:inline">{serverError}</span>
         </div>
       )}
 
@@ -60,7 +60,7 @@ function SignUpForm() {
         id="email"
         label="Email"
         type="email"
-        placeholder="Enter your Email"
+        placeholder="Enter your email"
         {...register("email")}
         error={errors.email?.message}
       />

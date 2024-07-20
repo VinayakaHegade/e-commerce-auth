@@ -4,10 +4,12 @@ import { type Context } from "./auth-controller";
 export const getUserHandler = ({ ctx }: { ctx: Context }) => {
   try {
     const user = ctx.user;
+    const name = user?.name;
+
     return {
       status: "success",
       data: {
-        user,
+        name,
       },
     };
   } catch (err: any) {

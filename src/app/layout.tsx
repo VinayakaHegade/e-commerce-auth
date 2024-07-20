@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./components/header";
 import OfferBar from "./components/offer-bar";
 import { Toaster } from "./components/ui/toaster";
+import { AuthProvider } from "./components/auth-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <OfferBar />
         <TRPCReactProvider>
-          <main className="mx-auto max-w-[1440px]">{children}</main>
+          <AuthProvider>
+            <main className="mx-auto max-w-[1440px] px-4">{children}</main>
+          </AuthProvider>
         </TRPCReactProvider>
         <Toaster />
       </body>

@@ -102,14 +102,14 @@ export const loginHandler = async ({ input, ctx }: { input: LoginUserInput; ctx:
     const secret: Secret = process.env.JWT_SECRET!;
 
     const token = jwt.sign({ sub: user.id }, secret, {
-      expiresIn: 60 * 60,
+      expiresIn: 7 * 24 * 60 * 60,
     });
 
     const cookieOptions = {
       httpOnly: true,
       path: "/",
       secure: process.env.NODE_ENV !== "development",
-      maxAge: 60 * 60,
+      maxAge: 7 * 24 * 60 * 60,
     };
 
     cookies().set("token", token, cookieOptions);
