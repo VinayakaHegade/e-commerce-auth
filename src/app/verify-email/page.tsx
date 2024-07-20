@@ -3,8 +3,17 @@
 import { useSearchParams } from "next/navigation";
 import { maskEmail } from "~/lib/utils";
 import OtpVerificationForm from "../components/otp-verification-form";
+import { Suspense } from "react";
 
-export default function VerifyEmailPage() {
+function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyEmailPageContent />
+    </Suspense>
+  );
+}
+
+function VerifyEmailPageContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const maskedEmail = maskEmail(email);
@@ -23,3 +32,5 @@ export default function VerifyEmailPage() {
     </section>
   );
 }
+
+export default VerifyEmailPage;
