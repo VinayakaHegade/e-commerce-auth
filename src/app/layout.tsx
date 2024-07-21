@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./components/header";
 import OfferBar from "./components/offer-bar";
 import { Toaster } from "./components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="mx-auto max-w-[1440px] px-4">{children}</main>
         </TRPCReactProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
