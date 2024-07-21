@@ -10,6 +10,8 @@ import { Label } from "./components/ui/lable";
 import { useRouter } from "next/navigation";
 import { Button } from "./components/ui/button";
 import LoadingSpinner from "./components/loading-spinner";
+import { toast } from "./components/ui/use-toast";
+import { ToastAction } from "./components/ui/toast";
 
 const CategoriesPage = () => {
   const router = useRouter();
@@ -22,6 +24,18 @@ const CategoriesPage = () => {
   const { mutate, isPending: isLoggingOut } = api.auth.logoutUser.useMutation({
     onSuccess: () => {
       router.push("/login");
+    },
+    onError: (error) => {
+      toast({
+        title: "Logout failed",
+        description: error.message || "An error occurred during logout",
+        variant: "destructive",
+        action: (
+          <ToastAction altText="Try again" onClick={handleLogout}>
+            Try again
+          </ToastAction>
+        ),
+      });
     },
   });
 
