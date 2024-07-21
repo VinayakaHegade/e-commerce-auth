@@ -1,38 +1,112 @@
-# Create T3 App
+# E-commerce User Interest Tracker with Auth
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This project is an e-commerce website that allows users to sign up, log in, and mark categories they are interested in. It features a paginated list of categories and uses Next.js with tRPC for type-safe API calls.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- User Authentication:
+  - Sign up with email and password
+  - Login with email and password
+  - Logout functionality
+  - Persistent login sessions using JWT
+- Email Verification:
+  - OTP (One-Time Password) sent to user's email
+  - Ability to resend OTP
+  - Account activation upon successful verification
+- Protected Routes:
+  - Secure pages accessible only to authenticated users
+- Category Interest Selection:
+  - Paginated list of product categories
+  - Users can select and save their interests
+  - Interests persist across sessions
+- Responsive Design:
+  - Mobile-friendly interface
+  - Adapts to various screen sizes
+- Error Handling:
+  - Informative error messages for user actions
+  - Toast notifications for success and error states
+- Security Features:
+  - Password hashing
+  - HTTP-only cookie
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [tRPC](https://trpc.io/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
 
-## Learn More
+## Prerequisites
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- Node.js (v14 or later)
+- npm or yarn or pnpm
+- PostgreSQL database
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Getting Started
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### 1. Clone the repository
 
-## How do I deploy this?
+```bash
+git clone https://github.com/VinayakaHegade/e-commerce-auth.git
+cd e-commerce-auth
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### 2. Install dependencies
 
-## Gmail setup
+```bash
+pnpm install
+# or
+yarn install
+```
 
-- Establish a Gmail account if you don't already have one.
-- Log in to your Gmail account and choose "Manage your Google Account".
-- Head to the Security tab on the left panel.
-- Enable 2-step verification if it's not already activated.
-- Scroll down to the App passwords section and generate a new app password.
-- Securely store this generated password in a safe location for use.
+### 3. Set up environment variables
+
+Create a `.env` file in the root directory and add the following variables:
+
+```
+DATABASE_URL="postgresql://username:password@localhost:5432/your_database_name"
+JWT_SECRET="your_jwt_secret_key"
+EMAIL_HOST=your-smtp-host
+EMAIL_SERVICE=your-email-service-like-gmail
+EMAIL_PORT=465
+EMAIL_USER=youremail@gmail.com
+EMAIL_PASS=youremailpassword
+EMAIL_USER_NAME=yourname
+```
+
+Replace the placeholders with your actual database credentials and secret keys.
+
+### 4. Set up the database
+
+```bash
+npx prisma db push
+```
+
+### 5. Seed the database with categories
+
+```bash
+pnpm run db:seed
+# or
+yarn db:seed
+```
+
+### 6. Run the development server
+
+```bash
+pnpm run dev
+# or
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Project Structure
+
+- `src/pages`: Next.js pages
+- `src/components`: React components
+- `src/server/api`: tRPC API routes and utilities
+- `src/lib`: Utility functions and schemas
+- `prisma`: Database schema and migrations
