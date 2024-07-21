@@ -13,6 +13,9 @@ importers:
       "@prisma/client":
         specifier: ^5.10.2
         version: 5.13.0(prisma@5.13.0)
+      "@radix-ui/react-checkbox":
+        specifier: ^1.1.1
+        version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       "@radix-ui/react-label":
         specifier: ^2.0.2
         version: 2.0.2(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -643,6 +646,22 @@ packages:
         integrity: sha512-4Z8dn6Upk0qk4P74xBhZ6Hd/w0mPEzOOLxy4xiPXOXqjF7jZS0VAKk7/x/H6FyY2zCkYJqePf1G5KmkmNJ4RBA==,
       }
 
+  "@radix-ui/react-checkbox@1.1.1":
+    resolution:
+      {
+        integrity: sha512-0i/EKJ222Afa1FE0C6pNJxDq1itzcl3HChE9DwskA4th4KRse8ojx8a1nVcOjwJdbpDLcz7uol77yYnQNMHdKw==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+
   "@radix-ui/react-collection@1.1.0":
     resolution:
       {
@@ -871,6 +890,30 @@ packages:
     resolution:
       {
         integrity: sha512-+FPE0rOdziWSrH9athwI1R0HDVbWlEhd+FR+aSDk4uWGmSJ9Z54sdZVDQPZAinJhJXwfT+qnj969mCsT2gfm5w==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+
+  "@radix-ui/react-use-previous@1.1.0":
+    resolution:
+      {
+        integrity: sha512-Z/e78qg2YFnnXcW88A4JmTtm4ADckLno6F7OXotmkQfeuCVaKuYzqAATPhVzl3delXE7CxIV8shofPn3jPc5Og==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+
+  "@radix-ui/react-use-size@1.1.0":
+    resolution:
+      {
+        integrity: sha512-XW3/vWuIXHa+2Uwcc2ABSfcCledmXhhQPlGbfcRXbiUQI5Icjcg19BGCZVKKInYbvUCut/ufbbLLPFC5cbb1hw==,
       }
     peerDependencies:
       "@types/react": "*"
@@ -3875,6 +3918,22 @@ snapshots:
 
   "@radix-ui/primitive@1.1.0": {}
 
+  "@radix-ui/react-checkbox@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)":
+    dependencies:
+      "@radix-ui/primitive": 1.1.0
+      "@radix-ui/react-compose-refs": 1.1.0(@types/react@18.3.2)(react@18.2.0)
+      "@radix-ui/react-context": 1.1.0(@types/react@18.3.2)(react@18.2.0)
+      "@radix-ui/react-presence": 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      "@radix-ui/react-primitive": 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      "@radix-ui/react-use-controllable-state": 1.1.0(@types/react@18.3.2)(react@18.2.0)
+      "@radix-ui/react-use-previous": 1.1.0(@types/react@18.3.2)(react@18.2.0)
+      "@radix-ui/react-use-size": 1.1.0(@types/react@18.3.2)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    optionalDependencies:
+      "@types/react": 18.3.2
+      "@types/react-dom": 18.3.0
+
   "@radix-ui/react-collection@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)":
     dependencies:
       "@radix-ui/react-compose-refs": 1.1.0(@types/react@18.3.2)(react@18.2.0)
@@ -4025,6 +4084,19 @@ snapshots:
 
   "@radix-ui/react-use-layout-effect@1.1.0(@types/react@18.3.2)(react@18.2.0)":
     dependencies:
+      react: 18.2.0
+    optionalDependencies:
+      "@types/react": 18.3.2
+
+  "@radix-ui/react-use-previous@1.1.0(@types/react@18.3.2)(react@18.2.0)":
+    dependencies:
+      react: 18.2.0
+    optionalDependencies:
+      "@types/react": 18.3.2
+
+  "@radix-ui/react-use-size@1.1.0(@types/react@18.3.2)(react@18.2.0)":
+    dependencies:
+      "@radix-ui/react-use-layout-effect": 1.1.0(@types/react@18.3.2)(react@18.2.0)
       react: 18.2.0
     optionalDependencies:
       "@types/react": 18.3.2

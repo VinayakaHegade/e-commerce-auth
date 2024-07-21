@@ -19,6 +19,7 @@ export default {
         },
         gray: {
           350: "#C1C1C1",
+          370: "#CCCCCC",
         },
         carbon: "rgba(51, 51, 51, 1)",
         border: "hsl(var(--border))",
