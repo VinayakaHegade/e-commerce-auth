@@ -19,18 +19,18 @@ const transporter = nodemailer.createTransport({
  */
 export const sendVerificationEmail = async (email: string, code: string): Promise<boolean> => {
   const mailOptions = {
-    from: `"${process.env.EMAIL_USER_NAME} from E-Commerce Auth 🔒" <${process.env.EMAIL_USER}>`,
+    from: `"${process.env.EMAIL_USER_NAME}" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Almost there! Let's verify your email address 🚀",
+    subject: "Verify your email address for E-Commerce Auth",
     html: `
-        <h1>Welcome to Our E-Commerce!</h1>
-        <p>Hello,</p>
-        <p>We're excited to have you on board. To get started, please verify your email address by entering the following verification code:</p>
-        <h2 style="color:blue;">${code}</h2>
-        <p>If you didn’t request this, please ignore this email.</p>
-        <p>Best,</p>
-        <p>E-Commerce Auth Team</p>
-    `,
+      <h1>Welcome to Our E-Commerce!</h1>
+      <p>Hello,</p>
+      <p>We're excited to have you join us. To get started, please verify your email address by entering this verification code:</p>
+      <h2 style="color: #4a90e2; background-color: #f0f8ff; padding: 10px; display: inline-block;">${code}</h2>
+      <p>If you didn't request this, you can safely ignore this email.</p>
+      <p>Best regards,</p>
+      <p>The E-Commerce Auth Team</p>
+  `,
   };
 
   try {
