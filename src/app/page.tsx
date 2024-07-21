@@ -9,13 +9,14 @@ import { Checkbox } from "./components/ui/checkbox";
 import { Label } from "./components/ui/lable";
 import { useRouter } from "next/navigation";
 import { Button } from "./components/ui/button";
+import LoadingSpinner from "./components/loading-spinner";
 
 const CategoriesPage = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState<Set<number>>(new Set());
 
-  const { data: categoriesData, isLoading } = api.category.getCategories.useQuery({ page });
+  const { data: categoriesData, isPending } = api.category.getCategories.useQuery({ page });
   const updateUserCategories = api.category.updateUserCategories.useMutation();
 
   const { mutate, isPending: isLoggingOut } = api.auth.logoutUser.useMutation({
@@ -45,7 +46,7 @@ const CategoriesPage = () => {
     mutate();
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isPending) return <LoadingSpinner />;
 
   return (
     <>

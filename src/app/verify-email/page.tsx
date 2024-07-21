@@ -4,10 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { maskEmail } from "~/lib/utils";
 import OtpVerificationForm from "../components/otp-verification-form";
 import { Suspense } from "react";
+import LoadingSpinner from "../components/loading-spinner";
 
 function VerifyEmailPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <VerifyEmailPageContent />
     </Suspense>
   );

@@ -5,10 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "../components/ui/use-toast";
 import LoginForm from "../components/login-form";
 import Link from "next/link";
+import LoadingSpinner from "../components/loading-spinner";
 
 function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <LoginPageContent />
     </Suspense>
   );
