@@ -1,4 +1,4 @@
-# E-commerce User Interest Tracker with Auth
+# E-commerce User Interest Tracker with Custom Authentication
 
 This project is an e-commerce website that allows users to sign up, log in, and mark categories they are interested in. It features a paginated list of categories and uses Next.js with tRPC for type-safe API calls.
 
